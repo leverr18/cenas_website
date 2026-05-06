@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Vegetarian Menu{% endblock %}
+
+{% block content %}
+<div class="menu-page menu-page--veggie">
+  <section class="menu-header">
+    <h1>Vegetarian</h1>
+    <p>Explore our delicious vegetarian options.</p>
+  </section>
+
+  <section class="menu-grid" data-menu-scope="vegetarian">
+    {% for item in vegetarian_items %}
+    <article class="menu-card menu-card--vegetarian" data-category="vegetarian">
+
+      {# Image support later if you want #}
+      {# {% if item.image %}
+      <button class="menu-card-image-btn" type="button">
+        <img src="{{ url_for('static', filename='images/' ~ item.image) }}"
+             alt="{{ item.name }}" class="menu-img-toggle">
+      </button>
+      {% endif %} #}
+
+      <div class="menu-info">
+        <h3 class="menu-card-title">{{ item.name }}</h3>
+
+        {% if item.price %}
+          <span class="menu-price">${{ "%.2f"|format(item.price|float) }}</span>
+        {% endif %}
+
+        {% if item.description or item.options %}
+        <div class="menu-details" hidden>
+
+          {% if item.description %}
+          <p class="menu-desc">{{ item.description }}</p>
+          {% endif %}
+
+          {% if item.options %}
+          <div class="menu-options">
+
+            {% for option in item.options %}
+              {% if option.variants %}
+                <div class="menu-option-group">
+                  <strong>{{ option.type }}</strong>
+                  <ul>
+                    {% for v in option.variants %}
+                      <li>
+                        {{ v.type }}
+                        {% if v.price is defined %}
+                          <span class="option-price">
+                            ${{ "%.2f"|format(v.price|float) }}
+                          </span>
+                        {% endif %}
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% else %}
+                <div class="menu-option-row">
+                  {{ option.type }}
+                  {% if option.price is defined %}
+                    <span class="option-price">
+                      ${{ "%.2f"|format(option.price|float) }}
+                    </span>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+
+          </div>
+          {% endif %}
+
+        </div>
+        {% endif %}
+      </div>
+
+    </article>
+    {% endfor %}
+  </section>
+</div>
+
+{% include "menu_modal.html" %}
+<script src="{{ url_for('static', filename='js/menu-grid.js') }}"></script>
+{% endblock %}
+

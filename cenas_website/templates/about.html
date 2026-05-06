@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - Cenas Kitchen{% endblock %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}
+{% block content %}
+
+  <!-- HEADER IMAGE -->
+  <header class="about-hero">
+    <img src="{{ url_for('static', filename='images/hero2.webp') }}" alt="Cenas Hero" class="hero-img" />
+  </header>
+
+  <!-- ABOUT SECTION -->
+  <section class="about-content">
+    <h2>About Cenas Kitchen</h2>
+    <p>Are you searching “Mexican restaurant near me”? Your search is over with Cenas Kitchen restaurant. We offer authentic Tex-Mex that is delicious and totally crave-worthy. With the best happy hour in town, it is little wonder why we are a favorite of locals and visitors in Houston and Tomball.</p>
+
+    <img src="{{ url_for('static', filename='images/cenas.webp') }}" alt="Cenas Team" class="team-img" />
+  </section>
+
+<section id="locations" class="locations-section">
+  <h2>Our Locations</h2>
+  <p>Visit one of our convenient locations in the Houston area.</p>
+
+  <div class="map-container">
+    <div id="map"></div>
+    <div id="sidebar">
+      <h3>Locations</h3>
+      <ul id="location-list">
+        {% for location in locations %}
+          <li data-lat="{{ location.lat }}" data-lng="{{ location.lng }}">
+            <strong>{{ location.name }}</strong><br>
+            {{ location.address }}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+

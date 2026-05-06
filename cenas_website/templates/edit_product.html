@@ -1,0 +1,138 @@
+{% extends 'baselogin.html' %}
+{% block title %}Edit Product{% endblock %}
+
+{% block head_extra %}
+<style>
+  body { background: #f7f0eb; }
+  .admin-shell {
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 3rem;
+  }
+  .admin-card {
+    background: #fffaf7;
+    border: 1px solid rgba(180,120,100,.15);
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 4px 18px rgba(90,28,28,.06);
+  }
+  .admin-card h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #5a1c1c;
+    margin: 0 0 1.5rem;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    margin-bottom: 1.1rem;
+  }
+  .form-group label {
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #a06060;
+  }
+  .form-group input,
+  .form-group select {
+    padding: .55rem .75rem;
+    border: 1px solid rgba(180,120,100,.3);
+    border-radius: 8px;
+    background: #fff;
+    color: #3d1a1a;
+    font-size: .9rem;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #9b2b2b;
+  }
+  .current-image {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: 1.1rem;
+  }
+  .current-image img {
+    height: 64px;
+    width: 64px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid rgba(180,120,100,.2);
+  }
+  .current-image span {
+    font-size: .8rem;
+    color: #8b4343;
+  }
+  .btn-submit {
+    background: #9b2b2b;
+    color: #fff;
+    font-weight: 700;
+    font-size: .95rem;
+    padding: .6rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: .5rem;
+    transition: background .15s;
+    width: 100%;
+  }
+  .btn-submit:hover { background: #7a1f1f; }
+  .btn-back {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: .85rem;
+    color: #9b2b2b;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .btn-back:hover { text-decoration: underline; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-shell">
+  <div class="admin-card">
+    <h1>Edit Product</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+
+      <div class="form-group">
+        <label for="{{ form.product_name.id }}">Product Name</label>
+        {{ form.product_name(class="form-control") }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.in_stock.id }}">In Stock</label>
+        {{ form.in_stock(class="form-control") }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.category.id }}">Category</label>
+        {{ form.category(class="form-control") }}
+      </div>
+
+      {% if item.product_picture %}
+        {% set fname = (item.product_picture | replace('\\','/')).split('/')[-1] %}
+        <div class="current-image">
+          <img src="{{ url_for('admin.get_image', filename=fname) }}" alt="{{ item.product_name }}">
+          <span>Current image</span>
+        </div>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="{{ form.product_picture.id }}">Replace Image (optional)</label>
+        {{ form.product_picture(class="form-control") }}
+      </div>
+
+      {{ form.save(class="btn-submit") }}
+    </form>
+
+    <a href="{{ url_for('admin.shop_items') }}" class="btn-back">← Back to Products</a>
+  </div>
+</div>
+{% endblock %}

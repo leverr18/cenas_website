@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Career — Cenas Kitchen{% endblock %}
+
+{% block content %}
+<section class="ck-career-wrapper career-bg">
+  <div class="career-card">
+    <h2>Join Our Team</h2>
+
+    <p>At Cenas Kitchen, we treat staff like family. Whether you’re stepping into your first job or growing into a leadership role, this is a place to thrive. With fair pay, consistent hours, and a team that has your back.</p>
+
+    <p>We’re hiring across all positions — front of house, kitchen, bar, and management. Select your location below to view full details and apply.</p>
+
+    <hr>
+
+    <div class="ck-career-cta" aria-label="Choose your location">
+      <a class="ck-career-btn" href="{{ url_for('career.apply', slug='tomball') }}">
+        <span>Apply — Tomball</span>
+        <small><span class="ck-chip">Now Hiring</span></small>
+      </a>
+
+      <a class="ck-career-btn" href="{{ url_for('career.apply', slug='copperfield') }}">
+        <span>Apply — Copperfield</span>
+        <small><span class="ck-chip">Now Hiring</span></small>
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+
+
+
+
+
+
+

@@ -1,0 +1,555 @@
+{% extends "base.html" %}
+{% block title %}Apply — {{ location_label }} | Cenas Kitchen{% endblock %}
+
+{% block content %}
+<section class="ck-career-wrapper career-bg">
+  <div class="ck-career-card">
+
+    <div class="career-info-box">
+      <h2>Apply — {{ location_label }}</h2>
+      <div class="catering-steps-box">
+        <h3>About the Role</h3>
+        <div class="catering-step">
+          <h4>Our Culture</h4>
+          <p>Join our team at Cenas Kitchen, where we treat staff like family and bring passion to every plate. It’s more than just a job—it’s a chance to grow in a supportive, fun, and flavorful environment.</p>
+        </div>
+        <div class="catering-step">
+          <h4>Managers</h4>
+          <p><strong>Managers</strong> enjoy a competitive salary starting at <strong>$48,000 per year</strong>, along with consistent hours, leadership growth opportunities, and the chance to make a real impact in our community-focused restaurants. We recognize the dedication it takes to lead, and we reward it with stability, respect, and benefits that go beyond the paycheck. These include full insurance, free meals, opportunities for bonuses, and PTO.</p>
+        </div>
+        <div class="catering-step">
+          <h4>Team Members</h4>
+          <p>For our team members, we believe <strong>money matters</strong>—and that’s why we’re transparent about our pay. From cooks and servers to hosts, bartenders, and to-go associates, every position offers fair, consistent wages and the opportunity to earn more as you grow with us. With reliable hours, supportive management, and clear paths for advancement, you’ll always know where you stand and where you’re headed.</p>
+        </div>
+        <div class="catering-step">
+          <h4>Your Career Starts Here</h4>
+          <p>Whether you’re starting your very first job or stepping into a leadership role, Cenas Kitchen is a place to build skills, make lasting connections, and be part of something bigger than yourself. Your career starts here—apply today and see where it can take you.</p>
+        </div>
+      </div>
+
+      <hr>
+      <p style="font-size: 0.85rem; color: #555; line-height: 1.4;">
+        <strong>Starting Rates:</strong><br>
+        Cook – $13/hr · Server – $2.13/hr + tips (avg. $17–$19/hr) · Bar – $4.25/hr + tips (avg. $21–$23/hr) · Host – $10/hr · To-Go Associate – $8/hr + tips (avg. $12–$15/hr) · Expo – $12/hr · Dishwasher – $11/hr · Prep – $13/hr · Manager – $48,000/year salary<br>
+        <span style="font-style: italic;">Rates may vary by location and experience. Consistent hours provided. Must be avilable to work four shifts out of the week, three of those must be the weekend. This means you're available to work those days, not that you will be scheduled every day. </span>
+      </p>
+    </div>
+
+    <div class="career-form-box">
+      {% if form_action %}
+      <!-- Per-location Formspree endpoint is injected as {{ form_action }} -->
+      <form action="{{ form_action }}" method="POST" class="formspree-form" enctype="multipart/form-data">
+        <h2>Job Application ({{ location_label }})</h2>
+
+        <!-- Formspree helpers -->
+        <input type="hidden" name="_subject" value="New Career Application — {{ location_label }}">
+        <input type="hidden" name="location" value="{{ location_label }}">
+        <input type="hidden" name="_next" value="{{ url_for('career.apply', slug=location_slug, _external=True) }}?ok=1">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+        <!-- ================ Personal Information ================ -->
+        <fieldset>
+          <legend>Personal Information</legend>
+
+          <div class="grid-2">
+            <label>First Name* <input type="text" name="first_name" required></label>
+            <label>Middle Name <input type="text" name="middle_name"></label>
+            <label>Last Name* <input type="text" name="last_name" required></label>
+            <label>Preferred First Name <input type="text" name="preferred_name"></label>
+          </div>
+
+          <div class="grid-3">
+            <label>Email Address* <input type="email" name="email" required></label>
+            <label>Mobile Number* <input type="tel" name="mobile" required></label>
+            <label>May we text you?*
+              <div class="radio-group">
+                <label><input type="radio" name="ok_to_text" value="Yes" required> Yes</label>
+                <label><input type="radio" name="ok_to_text" value="No"> No</label>
+              </div>
+            </label>
+          </div>
+
+          <div class="grid-2">
+            <label>Home Phone Number <input type="tel" name="home_phone"></label>
+            <label>Date of Birth* <input type="date" name="dob" required></label>
+          </div>
+
+          <div class="grid-2">
+            <label>Address Line 1* <input type="text" name="addr1" required></label>
+            <label>Address Line 2 <input type="text" name="addr2"></label>
+          </div>
+
+          <div class="grid-3">
+            <label>City* <input type="text" name="city" required></label>
+            <label>County <input type="text" name="county"></label>
+            <label>State*
+              <select name="state" required>
+                <option value="" disabled selected>Select State</option>
+                <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
+                <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
+                <option>FL</option><option>GA</option><option>HI</option><option>ID</option>
+                <option>IL</option><option>IN</option><option>IA</option><option>KS</option>
+                <option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+                <option>MA</option><option>MI</option><option>MN</option><option>MS</option>
+                <option>MO</option><option>MT</option><option>NE</option><option>NV</option>
+                <option>NH</option><option>NJ</option><option>NM</option><option>NY</option>
+                <option>NC</option><option>ND</option><option>OH</option><option>OK</option>
+                <option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+                <option>SD</option><option>TN</option><option>TX</option><option>UT</option>
+                <option>VT</option><option>VA</option><option>WA</option><option>WV</option>
+                <option>WI</option><option>WY</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="grid-2">
+            <label>Zip Code* <input type="text" name="zip" required></label>
+            <label>Country* <input type="text" name="country" required value="United States"></label>
+          </div>
+        </fieldset>
+
+        <!-- ================ Position & Availability ================ -->
+        <fieldset>
+          <legend>Position &amp; Availability</legend>
+
+          <!-- NOTE: Location select removed; URL determines location -->
+
+          <div class="grid-3">
+            <label>Desired Position*
+              <select name="desired_position" required>
+                <option value="" disabled selected>Select Position</option>
+                <option>Server</option>
+                <option>Cook</option>
+                <option>Bartender</option>
+                <option>Host</option>
+                <option>To-Go Associate</option>
+                <option>Expo</option>
+                <option>Dishwasher</option>
+                <option>Prep</option>
+                <option>Manager</option>
+              </select>
+            </label>
+
+            <label>Employment Type*
+              <select name="employment_type" required>
+                <option value="" disabled selected>Select</option>
+                <option>Full-Time</option>
+                <option>Part-Time</option>
+                <option>Seasonal</option>
+              </select>
+            </label>
+
+            <label>Available to Start* <input type="date" name="available_start" required></label>
+          </div>
+
+          <div class="grid-3">
+            <label>Times Available (optional)
+              <input type="text" name="times_available" placeholder="e.g., Weekdays 4pm–10pm; Weekends open">
+            </label>
+            <label>Any days you are not able to work?*
+              <input type="text" name="days_unavailable" required placeholder="If none, write N/A">
+            </label>
+            <div></div>
+          </div>
+
+          <div>
+            <p>Days Available* (check all that apply)</p>
+            <div class="check-grid">
+              {% for d in ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] %}
+              <label><input type="checkbox" name="days_available" value="{{ d }}" required> {{ d }}</label>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <label>Applied here before?*
+              <div class="radio-group">
+                <label><input type="radio" name="applied_before" value="Yes" required> Yes</label>
+                <label><input type="radio" name="applied_before" value="No"> No</label>
+              </div>
+            </label>
+
+            <label>Worked here before?*
+              <div class="radio-group">
+                <label><input type="radio" name="worked_before" value="Yes" required> Yes</label>
+                <label><input type="radio" name="worked_before" value="No"> No</label>
+              </div>
+            </label>
+
+            <label id="prev_location_wrap" class="hidden">If yes, which location?
+              <input type="text" name="previous_location" id="previous_location" placeholder="Copperfield or Tomball">
+            </label>
+          </div>
+
+          <label>How did you hear about us? (optional)
+            <input type="text" name="referral_source" placeholder="Friend, Indeed, Instagram, Walk-in, etc.">
+          </label>
+        </fieldset>
+
+        <!-- ================ Work History (repeatable) ================ -->
+        <fieldset>
+          <legend>Work History</legend>
+          <p>You can add multiple previous employers.</p>
+
+          <div id="work-history-list">
+            <div class="work-block" data-index="1">
+              <h4>Employer #1</h4>
+
+              <div class="grid-2">
+                <label>Employer Name* <input type="text" name="work1_employer" required></label>
+                <label>Job Title* <input type="text" name="work1_job_title" required></label>
+              </div>
+
+              <div class="grid-3">
+                <label>Start Date* <input type="date" name="work1_start_date" required></label>
+                <label>End Date* <input type="date" name="work1_end_date" required></label>
+                <label>Still employed?
+                  <div class="radio-group">
+                    <label><input type="radio" name="work1_still_employed" value="Yes"> Yes</label>
+                    <label><input type="radio" name="work1_still_employed" value="No"> No</label>
+                  </div>
+                </label>
+              </div>
+
+              <div class="grid-2">
+                <label>Employer Address <input type="text" name="work1_employer_address"></label>
+                <label>Employer Phone <input type="tel" name="work1_employer_phone"></label>
+              </div>
+
+              <div class="grid-2">
+                <label>Supervisor’s Name <input type="text" name="work1_supervisor"></label>
+                <label>May we contact this employer?
+                  <div class="radio-group">
+                    <label><input type="radio" name="work1_ok_to_contact" value="Yes"> Yes</label>
+                    <label><input type="radio" name="work1_ok_to_contact" value="No"> No</label>
+                  </div>
+                </label>
+              </div>
+
+              <div class="grid-2">
+                <label>Starting Pay Rate <input type="text" name="work1_start_pay"></label>
+                <label>Ending Pay Rate <input type="text" name="work1_end_pay"></label>
+              </div>
+
+              <label>Responsibilities &amp; Duties*
+                <textarea name="work1_responsibilities" rows="3" required></textarea>
+              </label>
+
+              <label>Reason for Leaving*
+                <input type="text" name="work1_reason_for_leaving" required>
+              </label>
+
+              <hr>
+            </div>
+          </div>
+
+          <button type="button" id="add-work">+ Add Another Employer</button>
+        </fieldset>
+
+        <!-- ================ Education (optional) ================ -->
+        <fieldset>
+          <legend>Education (optional)</legend>
+          <label>Highest Level of Education Completed
+            <input type="text" name="education_level" placeholder="e.g., High School Diploma, Associate, Bachelor’s">
+          </label>
+        </fieldset>
+
+        <!-- ================ References ================ -->
+        <fieldset>
+          <legend>Reference</legend>
+
+          <div class="grid-2">
+            <label>Reference Name* <input type="text" name="ref_name" required></label>
+            <label>Reference Email* <input type="email" name="ref_email" required></label>
+          </div>
+
+          <div class="grid-2">
+            <label>Reference Phone* <input type="tel" name="ref_phone" required></label>
+            <label>Reference Type*
+              <select name="ref_type" required>
+                <option value="" disabled selected>Select</option>
+                <option>Personal</option>
+                <option>Work</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="grid-3">
+            <label>Address Line 1 <input type="text" name="ref_addr1"></label>
+            <label>Address Line 2 <input type="text" name="ref_addr2"></label>
+            <label>City <input type="text" name="ref_city"></label>
+          </div>
+
+          <div class="grid-3">
+            <label>State <input type="text" name="ref_state"></label>
+            <label>Zip <input type="text" name="ref_zip"></label>
+            <label>Country <input type="text" name="ref_country"></label>
+          </div>
+
+          <label>Years Known <input type="text" name="ref_years_known" placeholder="e.g., 3 years"></label>
+        </fieldset>
+
+        <!-- ================ Skills & Screening ================ -->
+        <fieldset>
+          <legend>Skills &amp; Screening</legend>
+
+          <div class="grid-3">
+            <label>Reliable transportation?*
+              <div class="radio-group">
+                <label><input type="radio" name="reliable_transport" value="Yes" required> Yes</label>
+                <label><input type="radio" name="reliable_transport" value="No"> No</label>
+              </div>
+            </label>
+
+            <label>Willing to work a changing schedule?*
+              <div class="radio-group">
+                <label><input type="radio" name="changing_schedule" value="Yes" required> Yes</label>
+                <label><input type="radio" name="changing_schedule" value="No"> No</label>
+              </div>
+            </label>
+
+            <label>Felony/gross misdemeanor history?*
+              <div class="radio-group">
+                <label><input type="radio" name="felony_history" value="Yes" required> Yes</label>
+                <label><input type="radio" name="felony_history" value="No"> No</label>
+              </div>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- ================ Work Authorization ================ -->
+        <fieldset>
+          <legend>Work Authorization</legend>
+          <label>Authorized to work in the U.S.?*
+            <div class="radio-group">
+              <label><input type="radio" name="us_authorized" value="Yes" required> Yes</label>
+              <label><input type="radio" name="us_authorized" value="No"> No</label>
+            </div>
+          </label>
+        </fieldset>
+
+        <!-- ================ Final & Acknowledgment ================ -->
+        <fieldset>
+          <legend>Final &amp; Acknowledgment</legend>
+
+          <label>Upload Resume (PDF/DOC, optional)
+            <input type="file" name="resume" accept=".pdf,.doc,.docx">
+          </label>
+
+          <label>Additional Comments (optional)
+            <textarea name="additional_comments" rows="3" placeholder="Anything else you'd like us to know"></textarea>
+          </label>
+
+          <label class="certify">
+            <input type="checkbox" name="certify_true" required>
+            I certify that the information provided is true and complete to the best of my knowledge. I consent to pre-employment screening.*
+          </label>
+        </fieldset>
+
+        <button type="submit">Submit Application</button>
+      </form>
+
+      {% if request.args.get('ok') %}
+        <p class="flash-success" style="margin-top:1rem;">Thanks! Your application was sent.</p>
+      {% endif %}
+
+      {% else %}
+      <h2>Job Application ({{ location_label }})</h2>
+      <p>Online applications for this location are temporarily unavailable.</p>
+      <p>Please reach out to us directly to apply:</p>
+      <p><strong>Email:</strong> <a href="mailto:info@cenaskitchen.com">info@cenaskitchen.com</a></p>
+      <p><strong>Phone:</strong> <a href="tel:+12812511515">(281) 251-1515</a></p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block head_extra %}
+<script>
+  (function() {
+    // Show "previous location" only when worked_before === Yes
+    const prevWrap  = document.getElementById('prev_location_wrap');
+    const prevInput = document.getElementById('previous_location');
+
+    function togglePrevLoc() {
+      const worked = document.querySelector('input[name="worked_before"]:checked');
+      const show = worked && worked.value === 'Yes';
+      if (prevWrap) prevWrap.classList.toggle('hidden', !show);
+      if (prevInput) prevInput.required = !!show;
+    }
+    document.querySelectorAll('input[name="worked_before"]').forEach(r => {
+      r.addEventListener('change', togglePrevLoc);
+    });
+
+    // Add additional Work History blocks with incremented flat names
+    const list = document.getElementById('work-history-list');
+    const addBtn = document.getElementById('add-work');
+    let idx = 1;
+
+    if (addBtn && list) {
+      addBtn.addEventListener('click', () => {
+        idx += 1;
+        const first = list.querySelector('.work-block');
+        const clone = first.cloneNode(true);
+        clone.dataset.index = idx;
+        clone.querySelector('h4').textContent = `Employer #${idx}`;
+
+        clone.querySelectorAll('input, textarea, select').forEach(el => {
+          // rename workN_ prefix & clear values/unchecked
+          el.name = el.name.replace(/work\d+_/, 'work' + idx + '_');
+          if (el.type === 'checkbox' || el.type === 'radio') {
+            el.checked = false;
+          } else {
+            el.value = '';
+          }
+        });
+
+        list.appendChild(clone);
+      });
+    }
+
+    // run once at load in case the page is restored from bfcache
+    togglePrevLoc();
+  })();
+</script>
+<style>
+  /* Core layout grid refinements */
+.grid-2, .grid-3 {
+  display: grid;
+  gap: 12px;
+}
+
+/* Desktop defaults (same as before) */
+.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* Responsive adjustments for tablets and phones */
+@media (max-width: 900px) {
+  .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  fieldset { padding: 14px; }
+  input, select, textarea {
+    font-size: 1rem;
+    padding: 12px;
+  }
+  label { font-size: 1rem; }
+}
+
+/* More readable check-grid for small screens */
+.check-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: 8px;
+}
+.check-grid label {
+  font-size: 0.9rem;
+  text-align: center;
+  background: #f7f7f7;
+  border-radius: 6px;
+  padding: 6px 0;
+  border: 1px solid #ddd;
+}
+.check-grid input { margin-right: 4px; }
+
+/* Fieldset visual comfort */
+fieldset {
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin: 18px 0;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.7);
+}
+legend {
+  font-weight: 600;
+  padding: 0 8px;
+  color: #7A1214;
+}
+
+/* Form typography */
+label {
+  display: block;
+  font-size: 0.95rem;
+  margin: 6px 0;
+  color: #333;
+}
+input[type="text"], input[type="email"], input[type="tel"],
+input[type="date"], select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #b54b3d;
+  box-shadow: 0 0 0 3px rgba(181, 75, 61, 0.1);
+}
+
+/* Radio & checkbox groups */
+.radio-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.radio-group > label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+/* Buttons */
+.career-form-box button[type="submit"],
+#add-work {
+  margin-top: 14px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  background: linear-gradient(180deg, #7A1214, #651c1e);
+  color: #fffaf5;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.career-form-box button[type="submit"]:hover,
+#add-work:hover {
+  background: linear-gradient(180deg, #9c3b33, #7a1214);
+  transform: translateY(-2px);
+}
+
+/* Add Work button variant */
+#add-work {
+  background: #f7f7f7;
+  color: #3b2a24;
+  border: 1px solid #ccc;
+}
+#add-work:hover {
+  background: #f3e4d6;
+  color: #7A1214;
+}
+
+/* Spacing for smaller screens */
+@media (max-width: 480px) {
+  .career-info-box h2,
+  .career-form-box h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  fieldset legend {
+    font-size: 1rem;
+  }
+  button, #add-work {
+    width: 100%;
+  }
+}
+
+</style>
+{% endblock %}
+

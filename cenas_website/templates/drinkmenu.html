@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Tequila Menu{% endblock %}
+
+{% block content %}
+<div class="menu-page menu-page--tequila">
+  <section class="menu-header">
+    <h1>Tequila</h1>
+    <p>Margaritas, cocktails & more.</p>
+  </section>
+
+  <!-- Filter -->
+  <section class="menu-filters">
+    <div class="menu-filters-desktop">
+      <button class="menu-filter-pill is-active" data-filter="all">All</button>
+      {% for category in drink_items %}
+        {% set cat = category.category|lower|replace(' ', '-') %}
+        <button class="menu-filter-pill" data-filter="{{ cat }}">{{ category.category }}</button>
+      {% endfor %}
+    </div>
+
+    <div class="menu-filters-mobile">
+      <select id="menu-filter-select">
+        <option value="all">All</option>
+        {% for category in drink_items %}
+          {% set cat = category.category|lower|replace(' ', '-') %}
+          <option value="{{ cat }}">{{ category.category }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </section>
+
+  <!-- Grid cards -->
+  <section class="menu-grid" data-menu-scope="tequila">
+    {% for category in drink_items %}
+    {% set cat = category.category|lower|replace(' ', '-') %}
+      {% for item in category["items"] %}
+      <article class="menu-card menu-card--tequila" data-category="{{ cat }}">
+        
+        {% if item.image %}
+        <button class="menu-card-image-btn" type="button">
+          <img src="{{ url_for('static', filename='images/' ~ item.image) }}"
+               alt="{{ item.name }}" class="menu-img-toggle">
+        </button>
+        {% endif %}
+
+        <div class="menu-info">
+          <h3 class="menu-card-title">{{ item.name }}</h3>
+
+          {% if item.description %}
+          <div class="menu-details" hidden>
+            <p>{{ item.description }}</p>
+          </div>
+          {% endif %}
+        </div>
+
+      </article>
+      {% endfor %}
+    {% endfor %}
+  </section>
+</div>
+
+{% include "menu_modal.html" %}
+<script src="{{ url_for('static', filename='js/menu-grid.js') }}"></script>
+{% endblock %}
+
+
+
+
+
+
+

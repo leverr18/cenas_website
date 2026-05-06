@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Cenas Kitchen Menu{% endblock %}
+
+{% block content %}
+<div class="menu-page menu-page--cenas">
+  <section class="menu-header">
+    <h1>Cenas Kitchen</h1>
+    <p>Filter by category and explore our favorites!</p>
+  </section>
+
+  <!-- Filter bar -->
+  <section class="menu-filters">
+    <div class="menu-filters-desktop">
+      <button class="menu-filter-pill is-active" data-filter="all">All</button>
+      {% for category in menu_items %}
+        {% set cat = category.category|lower|replace(' ', '-') %}
+        <button class="menu-filter-pill" data-filter="{{ cat }}">{{ category.category }}</button>
+      {% endfor %}
+    </div>
+
+    <div class="menu-filters-mobile">
+      <select id="menu-filter-select">
+        <option value="all">All</option>
+        {% for category in menu_items %}
+          {% set cat = category.category|lower|replace(' ', '-') %}
+          <option value="{{ cat }}">{{ category.category }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </section>
+
+  <!-- Vertical grid cards -->
+  <section class="menu-grid" data-menu-scope="cenas">
+    {% for category in menu_items %}
+    {% set cat = category.category|lower|replace(' ', '-') %}
+      {% for item in category["items"] %}
+      <article class="menu-card menu-card--cenas" data-category="{{ cat }}">
+        
+        {% if item.image %}
+        <button class="menu-card-image-btn" type="button">
+          <img src="{{ url_for('static', filename='images/' ~ item.image) }}"
+               alt="{{ item.name }}" class="menu-img-toggle">
+        </button>
+        {% endif %}
+
+        <div class="menu-info">
+          <h3 class="menu-card-title">{{ item.name }}</h3>
+
+          {% if item.description or item.options %}
+          <div class="menu-details" hidden>
+            {% if item.description %}
+            <p class="menu-desc">{{ item.description }}</p>
+            {% endif %}
+
+            {% if item.options %}
+            <ul class="menu-options">
+              {% for option in item.options %}
+                {% if option.variants %}
+                  <li><strong>{{ option.type }}</strong>:
+                    <ul>
+                      {% for v in option.variants %}
+                        <li>{{ v.type }}</li>
+                      {% endfor %}
+                    </ul>
+                  </li>
+                {% else %}
+                  <li>{{ option.type }}</li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
+
+      </article>
+      {% endfor %}
+    {% endfor %}
+  </section>
+</div>
+
+{% include "menu_modal.html" %}
+<script src="{{ url_for('static', filename='js/menu-grid.js') }}"></script>
+{% endblock %}
+
+
+
+
+  
+
+
+
+
+
+
+
+

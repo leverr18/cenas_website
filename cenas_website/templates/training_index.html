@@ -1,0 +1,343 @@
+{% extends 'baselogin.html' %}
+{% block title %}Training Videos{% endblock %}
+
+{% block content %}
+<div class="training-shell">
+  <div class="training-card">
+    <h2 class="training-title">Training Videos</h2>
+
+    <div class="training-topbar">
+      <!-- Role pills -->
+      <div class="role-pills" id="role-pills">
+        <button data-role="bartender"
+                class="pill {% if active_role == 'bartender' %}active{% endif %}">
+          Bartender
+        </button>
+        <button data-role="server"
+                class="pill {% if active_role == 'server' %}active{% endif %}">
+          Server
+        </button>
+        <button data-role="cashier"
+                class="pill {% if active_role == 'cashier' %}active{% endif %}">
+          Cashier
+        </button>
+        <button data-role="host"
+                class="pill {% if active_role == 'host' %}active{% endif %}">
+          Host
+        </button>
+        <button data-role="all"
+                class="pill pill-all {% if active_role == 'all' %}active{% endif %}">
+          All
+        </button>
+      </div>
+
+      <!-- Subcategory dropdown (shown only when a role is active) -->
+      <div class="subcat-wrap" id="subcat-wrap" aria-live="polite">
+        <span id="subcat-label" class="sr-only">Subcategory</span>
+        <select id="subcat-select"
+                class="subcat-select"
+                aria-labelledby="subcat-label">
+        </select>
+      </div>
+
+      {% if current_user.id == 1 %}
+      <a class="upload-chip" href="{{ url_for('training.upload') }}">
+        ⬆︎ Upload
+      </a>
+      {% endif %}
+    </div>
+
+    {% if videos|length == 0 %}
+      <div class="empty-training">
+        <p>No training videos yet for this category.</p>
+      </div>
+    {% else %}
+      <div class="training-table-wrap">
+        <table class="training-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Uploaded</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for v in videos %}
+            <tr>
+              <td class="video-title-cell">{{ v.title }}</td>
+              <td>
+                <span class="cat-tag">{{ v.category }}</span>
+              </td>
+              <td>{{ v.uploaded_at.strftime('%Y-%m-%d %H:%M') }}</td>
+              <td>
+                <a class="watch-btn"
+                   href="{{ url_for('training.view', vid=v.id) }}">Watch</a>
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block head_extra %}
+<style>
+/* outer placement */
+.training-shell{
+  padding-top: calc(var(--nav-height, 72px) + 24px);
+  display:flex;
+  justify-content:center;
+  padding-bottom:3.5rem;
+}
+
+/* card */
+.training-card{
+  background: #fffaf7;
+  border: 1px solid rgba(180,120,100,.15);
+  border-radius:18px;
+  padding:1.75rem 1.5rem 1.25rem;
+  max-width:900px;
+  width:min(95vw, 900px);
+  box-shadow: 0 4px 18px rgba(90,28,28,.06);
+}
+
+/* heading */
+.training-title{
+  text-align:center;
+  margin:0 0 1.15rem;
+  font-weight:700;
+  color:#5a1c1c;
+}
+
+/* top bar: pills + dropdown + upload */
+.training-topbar{
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  align-items:center;
+  margin-bottom:1.25rem;
+}
+
+.role-pills{
+  display:flex;
+  gap:.55rem;
+  flex-wrap:wrap;
+}
+
+.pill{
+  border:none;
+  background:#fffaf7;
+  border:1px solid rgba(215,178,168,.5);
+  border-radius:999px;
+  padding:.45rem .85rem;
+  font-weight:600;
+  color:#5b1a1a;
+  cursor:pointer;
+  transition:all .15s ease;
+  font-size:.9rem;
+}
+.pill:hover{
+  background:rgba(155,43,43,.07);
+}
+.pill.active{
+  background:#9b2b2b;
+  color:#fff;
+  border-color:transparent;
+}
+.pill-all{
+  background:#9b2b2b;
+  color:#fff;
+}
+
+.upload-chip{
+  background:#fff3de;
+  border:1px solid rgba(249,186,79,.3);
+  padding:.35rem .85rem;
+  border-radius:999px;
+  font-weight:600;
+  color:#915c0b;
+  text-decoration:none;
+  white-space:nowrap;
+}
+
+/* dropdown */
+.subcat-wrap{
+  display:none;
+  gap:.5rem;
+  align-items:center;
+}
+.subcat-wrap.show{
+  display:flex;
+}
+.subcat-select{
+  padding:.45rem .6rem;
+  border:1px solid rgba(215,178,168,.5);
+  border-radius:8px;
+  background:#fffaf7;
+  color:#5b1a1a;
+  font-weight:600;
+}
+
+/* table */
+.training-table-wrap{
+  overflow-x:auto;
+}
+.training-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0 6px;
+}
+.training-table thead th{
+  text-align:left;
+  font-size:.78rem;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+  color:#999;
+  padding:0 .6rem .25rem;
+}
+.training-table tbody tr{
+  background:#fef5f0;
+  border-radius:10px;
+}
+.training-table tbody tr td{
+  padding:.5rem .6rem;
+  vertical-align:middle;
+}
+
+.video-title-cell{
+  font-weight:600;
+  color:#5a1c1c;
+}
+
+.cat-tag{
+  background:#fff;
+  border:1px solid rgba(235,174,150,.3);
+  border-radius:999px;
+  padding:.12rem .7rem;
+  font-size:.7rem;
+  text-transform:capitalize;
+}
+
+.watch-btn{
+  background:#fff;
+  border:none;
+  border-radius:8px;
+  padding:.35rem .9rem;
+  font-weight:600;
+  color:#5a1c1c;
+  text-decoration:none;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+}
+.watch-btn:hover{
+  background:#f7f2f2;
+}
+
+.empty-training{
+  background:#fff7f3;
+  border:1px dashed rgba(155, 43, 43, .2);
+  border-radius:10px;
+  padding:1.2rem;
+  text-align:center;
+  color:#8c3e3e;
+  font-weight:500;
+}
+
+/* mobile tweaks */
+@media (max-width: 640px){
+  .training-topbar{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .training-card{
+    padding:1.25rem 1rem 1rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Mapping: { "bartender": [["bar basics","Bar Basics"], ...], ... }
+  const mapping = {{ CATEGORY_BY_ROLE|tojson|safe }};
+
+  const pills = document.querySelectorAll(".role-pills .pill");
+  const subcatWrap  = document.getElementById("subcat-wrap");
+  const subcatLabel = document.getElementById("subcat-label");
+  const subcatSel   = document.getElementById("subcat-select");
+
+  const url = new URL(window.location.href);
+  let activeRole = "{{ active_role|default('all') }}".toLowerCase();
+  let activeCat  = "{{ active_cat|default('') }}".toLowerCase();
+
+  function buildSubcats(role, selectedValue){
+    subcatSel.innerHTML = "";
+    const items = mapping[role] || [];
+
+    const ph = document.createElement("option");
+    ph.value = "";
+    ph.textContent = "All " + role.charAt(0).toUpperCase() + role.slice(1);
+    subcatSel.appendChild(ph);
+
+    for (const [val,label] of items){
+      const opt = document.createElement("option");
+      opt.value = val;
+      opt.textContent = label;
+      if (selectedValue && selectedValue === val){
+        opt.selected = true;
+      }
+      subcatSel.appendChild(opt);
+    }
+  }
+
+  function updateDropdownVisibility(){
+    if (activeRole && activeRole !== "all"){
+      subcatWrap.classList.add("show");
+      subcatLabel.textContent = "Subcategory";
+      buildSubcats(activeRole, activeCat || "");
+    } else {
+      subcatWrap.classList.remove("show");
+      subcatSel.innerHTML = "";
+    }
+  }
+
+  pills.forEach(p => {
+    p.addEventListener("click", () => {
+      const role = (p.dataset.role || "").toLowerCase();
+      activeRole = role;
+      activeCat  = "";
+
+      if (role === "all"){
+        url.searchParams.delete("role");
+        url.searchParams.delete("cat");
+      } else {
+        url.searchParams.set("role", role);
+        url.searchParams.delete("cat");
+      }
+      window.location.href = url.toString();
+    });
+  });
+
+  if (subcatSel){
+    subcatSel.addEventListener("change", () => {
+      const val = subcatSel.value;
+      if (!val){
+        url.searchParams.set("role", activeRole);
+        url.searchParams.delete("cat");
+      } else {
+        url.searchParams.set("role", activeRole);
+        url.searchParams.set("cat", val);
+      }
+      window.location.href = url.toString();
+    });
+  }
+
+  updateDropdownVisibility();
+});
+</script>
+{% endblock %}
+
+
+

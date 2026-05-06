@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Coffee Menu{% endblock %}
+
+{% block content %}
+<div class="menu-page menu-page--coffee">
+  <section class="menu-header">
+    <h1>Coffee</h1>
+    <p>Warm, cozy, and caffeinated.</p>
+  </section>
+
+  <section class="menu-grid" data-menu-scope="coffee">
+    {% for item in coffee_items %}
+    <article class="menu-card menu-card--coffee">
+      
+      {% if item.image %}
+      <button class="menu-card-image-btn" type="button">
+        <img src="{{ url_for('static', filename='images/' ~ item.image) }}"
+             alt="{{ item.name }}" class="menu-img-toggle">
+      </button>
+      {% endif %}
+
+      <div class="menu-info">
+        <h3 class="menu-card-title">{{ item.name }}</h3>
+
+        {% if item.description %}
+        <div class="menu-details" hidden>
+          <p>{{ item.description }}</p>
+        </div>
+        {% endif %}
+      </div>
+
+    </article>
+    {% endfor %}
+  </section>
+</div>
+
+{% include "menu_modal.html" %}
+<script src="{{ url_for('static', filename='js/menu-grid.js') }}"></script>
+{% endblock %}
+

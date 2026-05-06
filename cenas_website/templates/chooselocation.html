@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Order - Choose Location{% endblock %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+
+  <header class="location-list-choice">
+    <h1>Choose which location you're picking up at!</h1>
+  </header>
+
+  <section class="location-choice">
+    <div class="map-container">
+      <div id="map"></div>
+
+      <div id="sidebar">
+        <h3>Locations</h3>
+        <ul id="location-list">
+          {% for location in locations %}
+            <li data-lat="{{ location.lat }}" data-lng="{{ location.lng }}">
+              <strong>{{ location.name }}</strong><br>
+              {{ location.address }}<br>
+              {% if location.order_url %}
+                <a href="{{ location.order_url }}" class="sidebar-order-btn" target="_blank" rel="noopener noreferrer">Order Here</a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
+

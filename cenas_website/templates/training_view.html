@@ -1,0 +1,16 @@
+{% extends 'baselogin.html' %}
+{% block title %}{{ video.title }}{% endblock %}
+{% block content %}
+<h2>{{ video.title }}</h2>
+<p style="color:#aaa; margin-top:-6px;">{{ video.category }} • {{ video.uploaded_at.strftime('%Y-%m-%d') }}</p>
+<p>{{ video.description }}</p>
+
+<video controls preload="metadata" style="max-width:100%; width:900px; height:auto; background:#000;">
+  <source src="{{ url_for('training.stream', vid=video.id) }}" type="{{ mime }}">
+  Sorry, your browser doesn’t support embedded video.
+</video>
+
+<div style="margin-top:12px;">
+  <a class="btn btn-secondary" href="{{ url_for('training.index') }}">Back to list</a>
+</div>
+{% endblock %}

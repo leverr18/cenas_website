@@ -1,0 +1,189 @@
+{% extends 'baselogin.html' %}
+{% block title %}Manage Products{% endblock %}
+
+{% block head_extra %}
+<style>
+  body { background: #f7f0eb; }
+  .admin-shell {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1rem 1.25rem 3rem;
+  }
+  .admin-card {
+    background: #fffaf7;
+    border: 1px solid rgba(180,120,100,.15);
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 4px 18px rgba(90,28,28,.06);
+  }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  @media (max-width: 640px) {
+    .admin-shell { padding: 0.75rem 0.75rem 2rem; }
+    .admin-card { padding: 1.25rem 1rem; border-radius: 12px; }
+    .admin-header h1 { font-size: 1.15rem; }
+    .admin-table { font-size: .8rem; }
+    .admin-table th, .admin-table td { padding: .5rem .5rem; }
+  }
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .admin-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #5a1c1c;
+    margin: 0;
+  }
+  .btn-add {
+    display: inline-block;
+    background: #9b2b2b;
+    color: #fff;
+    font-weight: 600;
+    font-size: .875rem;
+    padding: .5rem 1.1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background .15s;
+  }
+  .btn-add:hover { background: #7a1f1f; color: #fff; }
+
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .875rem;
+  }
+  .admin-table th {
+    text-align: left;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #a06060;
+    font-weight: 600;
+    padding: 0 .75rem .6rem;
+    border-bottom: 1px solid rgba(180,120,100,.2);
+  }
+  .admin-table td {
+    padding: .75rem .75rem;
+    color: #4a2828;
+    border-bottom: 1px solid rgba(180,120,100,.08);
+    vertical-align: middle;
+  }
+  .admin-table tr:last-child td { border-bottom: none; }
+  .admin-table .item-name { font-weight: 600; color: #3d1a1a; }
+
+  .btn-edit {
+    display: inline-block;
+    color: #9b2b2b;
+    font-weight: 600;
+    font-size: .8rem;
+    text-decoration: none;
+    padding: .3rem .7rem;
+    border: 1px solid rgba(155,43,43,.3);
+    border-radius: 7px;
+    transition: background .15s;
+  }
+  .btn-edit:hover { background: rgba(155,43,43,.07); }
+
+  .btn-delete {
+    background: none;
+    border: 1px solid rgba(180,60,60,.25);
+    color: #b03030;
+    font-size: .8rem;
+    font-weight: 600;
+    padding: .3rem .7rem;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn-delete:hover { background: rgba(180,60,60,.08); }
+
+  .empty-state { color: #a06060; font-size: .95rem; }
+  .btn-back {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-size: .85rem;
+    color: #9b2b2b;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .btn-back:hover { text-decoration: underline; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-shell">
+  <div class="admin-card">
+    <div class="admin-header">
+      <h1>Manage Products</h1>
+      <a href="{{ url_for('admin.add_items') }}" class="btn-add">+ Add Product</a>
+    </div>
+
+    {% if items | length < 1 %}
+      <p class="empty-state">No products yet.</p>
+    {% else %}
+      <div class="table-scroll"><table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date Added</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>In Stock</th>
+            <th>Image</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          {% set fname = (item.product_picture | replace('\\','/')).split('/')[-1] %}
+          <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.date_added.strftime('%b %d, %Y') if item.date_added else '—' }}</td>
+            <td class="item-name">{{ item.product_name }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.in_stock }}</td>
+            <td>
+              {% if item.product_picture %}
+              <img src="{{ url_for('admin.get_image', filename=fname) }}"
+                   alt="{{ item.product_name }}"
+                   style="height:44px; width:44px; border-radius:8px; object-fit:cover;">
+              {% else %}—{% endif %}
+            </td>
+            <td style="white-space:nowrap; display:flex; gap:.4rem;">
+              <a href="{{ url_for('admin.edit_product', product_id=item.id) }}" class="btn-edit edit-link">Edit</a>
+              <form method="POST" action="{{ url_for('admin.delete_product', product_id=item.id) }}"
+                    style="display:inline;" onsubmit="return confirm('Delete this product? This cannot be undone.');">
+                {{ csrf_token() if csrf_token is defined }}
+                <button type="submit" class="btn-delete">Delete</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table></div>
+    {% endif %}
+
+    <a href="{{ url_for('views.dashboard') }}" class="btn-back">← Back to Dashboard</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  const KEY = 'shopItemsScrollY';
+  const y = sessionStorage.getItem(KEY);
+  if (y !== null) {
+    requestAnimationFrame(() => window.scrollTo(0, parseInt(y, 10) || 0));
+    sessionStorage.removeItem(KEY);
+  }
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (a && a.matches('.edit-link')) sessionStorage.setItem(KEY, String(window.scrollY));
+  });
+  window.addEventListener('beforeunload', () => sessionStorage.setItem(KEY, String(window.scrollY)));
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cenas Kitchen</title>
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon-16x16.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='images/site.webmanifest') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+ <nav class="navbar">
+  <div class="nav-left">
+    <img src="{{ url_for('static', filename='images/final_logo.png') }}" alt="Logo" class="nav-logo">
+  </div>
+
+  <button class="mobile-nav-toggle">&#x22EE;</button> <!-- 3 vertical dots -->
+
+  <div class="nav-links-base">
+    <div class="dropdown-base">
+      <a href="#" class="dropbtn-base">Menu</a>
+            <div class="dropdown-content-base">
+        <a href="{{ url_for('views.menu') }}">Cenas Kitchen</a>
+        <a href="{{ url_for('views.drinks') }}">Tequila</a>
+        <a href="{{ url_for('views.coffee_menu') }}">Coffee</a>
+        <a href="{{ url_for('views.vegetarian_menu') }}">Vegetarian</a>
+      </div>
+
+    </div>
+
+    <div class="dropdown">
+      <a href="{{ url_for('views.orderlocation') }}" class="dropbtn">Order Now</a>
+    </div>
+
+    <!-- ABOUT dropdown -->
+    <div class="dropdown-base">
+      <a href="#" class="dropbtn-base">About</a>
+      <div class="dropdown-content-base">
+        <a href="{{ url_for('views.about_us') }}">About Us</a>
+        <a href="{{ url_for('views.about_us') }}#locations">Locations</a>
+      </div>
+    </div>
+
+    <!-- CATERING -->
+    <div class="dropdown-base">
+      <a href="{{ url_for('views.catering') }}" class="dropbtn-base">Catering</a>
+    </div>
+
+    <!-- COMMUNITY dropdown -->
+    <div class="dropdown-base">
+      <a href="#" class="dropbtn-base">Community</a>
+      <div class="dropdown-content-base">
+        <a href="{{ url_for('views.community') }}">Spirit Day</a>
+        <a href="{{ url_for('views.donations') }}">Donations</a>
+      </div>
+    </div>
+
+    <!-- CAREER dropdown -->
+    <div class="dropdown">
+  <a href="{{ url_for('views.career') }}" class="dropbtn">Career</a>
+</div>
+
+    <!-- CONTACT US -->
+    <div class="dropdown">
+    <a href="{{ url_for('views.contact') }}" class="dropbtn">Contact Us</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero-carousel">
+  <div class="carousel-track">
+    <img src="{{ url_for('static', filename='images/hero.webp') }}" alt="Hero 1" loading="lazy" />
+    <img src="{{ url_for('static', filename='images/hero3.webp') }}" alt="Hero 2" loading="lazy" />
+    <img src="{{ url_for('static', filename='images/espresso_martini_pretty.webp') }}" alt="Hero 3" loading="lazy" />
+    <img src="{{ url_for('static', filename='images/hero7.webp') }}" alt="Hero 4" loading="lazy" />
+    <img src="{{ url_for('static', filename='images/cateringpage.webp') }}" alt="Hero 5" loading="lazy" />
+  </div>
+
+  <div class="hero-overlay">
+    <img src="{{ url_for('static', filename='images/final_logo.png') }}" alt="Cenas Kitchen Logo" class="logo" />
+  </div>
+
+</header>
+
+
+<section class="options-section">
+  <div class="option">
+    <img src="{{ url_for('static', filename='images/your-drinks.webp') }}" alt="Drinks">
+    <a href="{{ url_for('views.drinks') }}" class="img-button">View Drinks</a>
+  </div>
+
+  <div class="option">
+    <img src="{{ url_for('static', filename='images/your-menu.webp') }}" alt="Menu">
+    <a href="{{ url_for('views.menu') }}" class="img-button">View Menu</a>
+  </div>
+
+  <div class="option">
+    <img src="{{ url_for('static', filename='images/your-order.webp') }}" alt="Order">
+    <a href="{{ url_for('views.orderlocation') }}" class="img-button">Order</a>
+  </div>
+</section>
+
+  <section class="catering-section">
+  <div class="catering-image">
+    <img src="{{ url_for('static', filename='images/catering.jpg') }}" alt="catering" />
+  </div>
+<div class="catering-content">
+  <h2>Let Us Cater Your Next Event!</h2>
+  <p>Enjoying the food? Have us cater your next event! </br>
+      We offer the same delicious food served daily at our Mexican restaurant. </br>
+      Learn more how we can take your event in the Houston and Tomball area to the next level.
+  </p>
+  <a href="{{ url_for('views.catering') }}" class="btn btn-blue catering-buttons">Order Now</a>
+  <a href="{{ url_for('views.menu') }}" class="btn btn-red1 catering-buttons">View Specials</a>
+  <a href="{{ url_for('views.contact') }}" class="btn btn-brown catering-buttons">Contact Us</a>
+</div>
+</section>
+  <footer>
+    <p>&copy; 2025 Cenas Kitchen</p>
+  </footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

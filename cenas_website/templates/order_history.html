@@ -1,0 +1,188 @@
+{% extends 'baselogin.html' %}
+{% block title %}Order History{% endblock %}
+
+{% block head_extra %}
+<style>
+  body { background: #f7f0eb; }
+
+  .orders-shell {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 1.25rem 3rem;
+  }
+  .orders-card {
+    background: #fffaf7;
+    border: 1px solid rgba(180, 120, 100, .15);
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 4px 18px rgba(90, 28, 28, .06);
+  }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  @media (max-width: 640px) {
+    .orders-shell { padding: 0.75rem 0.75rem 2rem; }
+    .orders-card { padding: 1.25rem 1rem; border-radius: 12px; }
+    .orders-header h1 { font-size: 1.15rem; }
+    .orders-header { flex-direction: column; align-items: flex-start; }
+    .btn-export-all { width: 100%; text-align: center; }
+    .orders-table { font-size: .8rem; }
+    .orders-table th, .orders-table td { padding: .5rem .5rem; }
+  }
+  .orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .orders-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #5a1c1c;
+    margin: 0 0 .2rem;
+  }
+  .orders-header p {
+    color: #8b4343;
+    font-size: .875rem;
+    margin: 0;
+  }
+
+  .btn-export-all {
+    display: inline-block;
+    background: #9b2b2b;
+    color: #fff;
+    font-weight: 600;
+    font-size: .85rem;
+    padding: .5rem 1.1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .15s;
+  }
+  .btn-export-all:hover { background: #7a1f1f; color: #fff; }
+
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .875rem;
+  }
+  .orders-table th {
+    text-align: left;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #a06060;
+    font-weight: 600;
+    padding: 0 .75rem .6rem;
+    border-bottom: 1px solid rgba(180,120,100,.2);
+  }
+  .orders-table td {
+    padding: .75rem .75rem;
+    color: #4a2828;
+    border-bottom: 1px solid rgba(180,120,100,.08);
+    vertical-align: middle;
+  }
+  .orders-table tr:last-child td { border-bottom: none; }
+
+  .status-pill {
+    background: rgba(155, 43, 43, .1);
+    color: #9b2b2b;
+    font-size: .72rem;
+    font-weight: 700;
+    padding: .2rem .65rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .store-pill {
+    background: rgba(90, 28, 28, .07);
+    color: #5a1c1c;
+    font-size: .72rem;
+    font-weight: 700;
+    padding: .2rem .65rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  .btn-csv {
+    display: inline-block;
+    background: none;
+    border: 1px solid rgba(155,43,43,.3);
+    color: #9b2b2b;
+    font-size: .78rem;
+    font-weight: 600;
+    padding: .3rem .75rem;
+    border-radius: 7px;
+    text-decoration: none;
+    transition: background .15s;
+  }
+  .btn-csv:hover { background: rgba(155,43,43,.07); }
+
+  .orders-empty {
+    color: #a06060;
+    font-size: .95rem;
+  }
+  .btn-back {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-size: .85rem;
+    color: #9b2b2b;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .btn-back:hover { text-decoration: underline; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="orders-shell">
+  <div class="orders-card">
+    <div class="orders-header">
+      <div>
+        <h1>Order History</h1>
+        <p>{% if admin_view %}All corporate order submissions{% else %}Your submitted orders{% endif %}</p>
+      </div>
+      {% if admin_view %}
+      <a href="{{ url_for('cart.export_all_orders_csv') }}" class="btn-export-all">Export All (CSV)</a>
+      {% endif %}
+    </div>
+
+    {% if orders %}
+    <div class="table-scroll"><table class="orders-table">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Date</th>
+          {% if admin_view %}<th>Store</th><th>Employee</th>{% endif %}
+          <th>Items</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td>#{{ order.id }}</td>
+          <td>{{ order.submitted_at.strftime('%b %d, %Y  %H:%M') }}</td>
+          {% if admin_view %}
+          <td><span class="store-pill">{{ order.customer.email | store_name }}</span></td>
+          <td>{{ order.customer.username }}</td>
+          {% endif %}
+          <td>{{ order.items | sum(attribute='quantity') }}</td>
+          <td><span class="status-pill">{{ order.status }}</span></td>
+          <td>
+            <a href="{{ url_for('cart.download_order_csv', order_id=order.id) }}" class="btn-csv">CSV</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table></div>
+    {% else %}
+    <p class="orders-empty">No orders submitted yet.</p>
+    {% endif %}
+
+    <a href="{{ url_for('views.dashboard') }}" class="btn-back">← Back to Dashboard</a>
+  </div>
+</div>
+{% endblock %}

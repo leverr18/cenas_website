@@ -1,0 +1,226 @@
+{% extends 'baselogin.html' %}
+{% block title %}Dashboard — Cenas Kitchen{% endblock %}
+
+{% block head_extra %}
+<style>
+  body { background: #f7f0eb; }
+
+  .dash-shell {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 3rem;
+  }
+
+  .dash-welcome {
+    margin-bottom: 2rem;
+  }
+  .dash-welcome h1 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: #5a1c1c;
+    margin: 0 0 .3rem;
+  }
+  .dash-welcome p {
+    color: #8b4343;
+    margin: 0;
+    font-size: .95rem;
+  }
+  .store-badge {
+    display: inline-block;
+    background: #9b2b2b;
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: .2rem .7rem;
+    border-radius: 999px;
+    margin-left: .5rem;
+    vertical-align: middle;
+  }
+
+  .dash-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+  @media (max-width: 640px) {
+    .dash-grid { grid-template-columns: 1fr; }
+  }
+
+  .dash-card {
+    background: #fffaf7;
+    border: 1px solid rgba(180, 120, 100, .15);
+    border-radius: 16px;
+    padding: 1.5rem 1.25rem;
+    box-shadow: 0 4px 18px rgba(90, 28, 28, .06);
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+  }
+  .dash-card-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+  .dash-card h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #5a1c1c;
+    margin: 0;
+  }
+  .dash-card p {
+    font-size: .875rem;
+    color: #7a4040;
+    margin: 0;
+    flex: 1;
+  }
+  .dash-card-btn {
+    display: inline-block;
+    background: #9b2b2b;
+    color: #fff;
+    font-weight: 600;
+    font-size: .875rem;
+    padding: .5rem 1.1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    align-self: flex-start;
+    transition: background .15s;
+  }
+  .dash-card-btn:hover { background: #7a1f1f; color: #fff; }
+
+  .dash-recent {
+    background: #fffaf7;
+    border: 1px solid rgba(180, 120, 100, .15);
+    border-radius: 16px;
+    padding: 1.5rem 1.25rem;
+    box-shadow: 0 4px 18px rgba(90, 28, 28, .06);
+  }
+  .dash-recent h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #5a1c1c;
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    font-size: .8rem;
+  }
+  .dash-recent-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .875rem;
+  }
+  .dash-recent-table th {
+    text-align: left;
+    color: #a06060;
+    font-weight: 600;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding: 0 .5rem .5rem;
+    border-bottom: 1px solid rgba(180,120,100,.15);
+  }
+  .dash-recent-table td {
+    padding: .6rem .5rem;
+    color: #4a2828;
+    border-bottom: 1px solid rgba(180,120,100,.08);
+  }
+  .dash-recent-table tr:last-child td { border-bottom: none; }
+  .status-pill {
+    background: rgba(155, 43, 43, .1);
+    color: #9b2b2b;
+    font-size: .72rem;
+    font-weight: 700;
+    padding: .15rem .6rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .dash-no-orders {
+    color: #a06060;
+    font-size: .875rem;
+  }
+  .dash-view-all {
+    display: inline-block;
+    margin-top: .9rem;
+    font-size: .82rem;
+    color: #9b2b2b;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .dash-view-all:hover { text-decoration: underline; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dash-shell">
+
+  <div class="dash-welcome">
+    <h1>
+      Welcome back, {{ current_user.username }}
+      <span class="store-badge">{{ current_user.email | store_name }}</span>
+    </h1>
+    <p>What would you like to do today?</p>
+  </div>
+
+  <div class="dash-grid">
+    <div class="dash-card">
+      <div class="dash-card-icon">🛒</div>
+      <h3>Corporate Order</h3>
+      <p>Browse available products and submit your weekly order.</p>
+      <a href="{{ url_for('views.shop') }}" class="dash-card-btn">Go to Shop</a>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-card-icon">🎬</div>
+      <h3>Training Videos</h3>
+      <p>Access training materials by role and category.</p>
+      <a href="{{ url_for('training.index') }}" class="dash-card-btn">View Training</a>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-card-icon">📋</div>
+      <h3>Order History</h3>
+      <p>Review your past submissions and download CSV reports.</p>
+      <a href="{{ url_for('cart.order_history') }}" class="dash-card-btn">View Orders</a>
+    </div>
+  </div>
+
+  <div class="dash-recent">
+    <h2>Recent Orders</h2>
+    {% if recent_orders %}
+    <table class="dash-recent-table">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>Date</th>
+          <th>Items</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in recent_orders %}
+        <tr>
+          <td>#{{ order.id }}</td>
+          <td>{{ order.submitted_at.strftime('%b %d, %Y') }}</td>
+          <td>{{ order.items | sum(attribute='quantity') }}</td>
+          <td><span class="status-pill">{{ order.status }}</span></td>
+          <td>
+            <a href="{{ url_for('cart.download_order_csv', order_id=order.id) }}"
+               style="color:#9b2b2b; font-size:.8rem; font-weight:600; text-decoration:none;">
+              CSV
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="{{ url_for('cart.order_history') }}" class="dash-view-all">View all orders →</a>
+    {% else %}
+    <p class="dash-no-orders">No orders submitted yet.</p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

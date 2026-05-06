@@ -1,0 +1,169 @@
+{% extends 'baselogin.html' %}
+{% block title %}Manage Training Videos{% endblock %}
+
+{% block head_extra %}
+<style>
+  body { background: #f7f0eb; }
+  .admin-shell {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 1.25rem 3rem;
+  }
+  .admin-card {
+    background: #fffaf7;
+    border: 1px solid rgba(180,120,100,.15);
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 4px 18px rgba(90,28,28,.06);
+  }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  @media (max-width: 640px) {
+    .admin-shell { padding: 0.75rem 0.75rem 2rem; }
+    .admin-card { padding: 1.25rem 1rem; border-radius: 12px; }
+    .admin-header h1 { font-size: 1.15rem; }
+    .admin-table { font-size: .8rem; }
+    .admin-table th, .admin-table td { padding: .5rem .5rem; }
+    .btn-edit, .btn-delete { font-size: .75rem; padding: .3rem .5rem; }
+  }
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .admin-header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #5a1c1c;
+    margin: 0;
+  }
+  .btn-upload {
+    display: inline-block;
+    background: #9b2b2b;
+    color: #fff;
+    font-weight: 600;
+    font-size: .875rem;
+    padding: .5rem 1.1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background .15s;
+  }
+  .btn-upload:hover { background: #7a1f1f; color: #fff; }
+
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .875rem;
+  }
+  .admin-table th {
+    text-align: left;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #a06060;
+    font-weight: 600;
+    padding: 0 .75rem .6rem;
+    border-bottom: 1px solid rgba(180,120,100,.2);
+  }
+  .admin-table td {
+    padding: .75rem .75rem;
+    color: #4a2828;
+    border-bottom: 1px solid rgba(180,120,100,.08);
+    vertical-align: middle;
+  }
+  .admin-table tr:last-child td { border-bottom: none; }
+  .video-title { font-weight: 600; color: #3d1a1a; }
+
+  .cat-tag {
+    background: rgba(90,28,28,.07);
+    color: #5a1c1c;
+    font-size: .72rem;
+    font-weight: 700;
+    padding: .2rem .65rem;
+    border-radius: 999px;
+    text-transform: capitalize;
+  }
+  .btn-edit {
+    display: inline-block;
+    color: #9b2b2b;
+    font-weight: 600;
+    font-size: .8rem;
+    text-decoration: none;
+    padding: .3rem .7rem;
+    border: 1px solid rgba(155,43,43,.3);
+    border-radius: 7px;
+    transition: background .15s;
+  }
+  .btn-edit:hover { background: rgba(155,43,43,.07); }
+  .btn-delete {
+    background: none;
+    border: 1px solid rgba(180,60,60,.25);
+    color: #b03030;
+    font-size: .8rem;
+    font-weight: 600;
+    padding: .3rem .7rem;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .btn-delete:hover { background: rgba(180,60,60,.08); }
+
+  .empty-state { color: #a06060; font-size: .95rem; }
+  .btn-back {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-size: .85rem;
+    color: #9b2b2b;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .btn-back:hover { text-decoration: underline; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-shell">
+  <div class="admin-card">
+    <div class="admin-header">
+      <h1>Manage Training Videos</h1>
+      <a href="{{ url_for('training.upload') }}" class="btn-upload">+ Upload New</a>
+    </div>
+
+    {% if videos %}
+    <div class="table-scroll"><table class="admin-table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Uploaded</th>
+          <th style="width:160px;"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in videos %}
+        <tr>
+          <td class="video-title">{{ v.title }}</td>
+          <td><span class="cat-tag">{{ v.category }}</span></td>
+          <td>{{ v.uploaded_at.strftime('%b %d, %Y') }}</td>
+          <td style="display:flex; gap:.4rem;">
+            <a href="{{ url_for('training.edit', vid=v.id) }}" class="btn-edit">Edit</a>
+            <form method="POST" action="{{ url_for('training.delete', vid=v.id) }}"
+                  style="display:inline;" onsubmit="return confirm('Delete this video?');">
+              {{ csrf_token() if csrf_token is defined }}
+              <button type="submit" class="btn-delete">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table></div>
+    {% else %}
+      <p class="empty-state">No training videos yet.</p>
+    {% endif %}
+
+    <a href="{{ url_for('views.dashboard') }}" class="btn-back">← Back to Dashboard</a>
+  </div>
+</div>
+{% endblock %}

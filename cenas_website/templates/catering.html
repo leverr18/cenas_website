@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Catering — Cenas Kitchen{% endblock %}
+
+{% block content %}
+<section class="ck-career-wrapper catering-bg">
+  <div class="career-card">
+    <h2>We Know Catering</h2>
+
+    <p>Make your next event unforgettable with Cenas Kitchen catering — where every dish is crafted with love, bold flavor, and authentic Tex-Mex flair. Whether it's a celebration or a corporate gathering, we bring the fiesta to you.</p>
+
+    <div class="ck-career-cta" aria-label="Choose your location">
+      <a class="ck-career-btn" href="{{ url_for('catering.catering_form', slug='tomball') }}">
+        <span>Catering — Tomball</span>
+        <small><span class="ck-chip">Request</span></small>
+      </a>
+
+      <a class="ck-career-btn" href="{{ url_for('catering.catering_form', slug='copperfield') }}">
+        <span>Catering — Copperfield</span>
+        <small><span class="ck-chip">Request</span></small>
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,145 @@
+{% extends 'baselogin.html' %}
+{% block title %}Edit Training Video{% endblock %}
+
+{% block head_extra %}
+<style>
+  body { background: #f7f0eb; }
+  .admin-shell {
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 3rem;
+  }
+  .admin-card {
+    background: #fffaf7;
+    border: 1px solid rgba(180,120,100,.15);
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 4px 18px rgba(90,28,28,.06);
+  }
+  .admin-card h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #5a1c1c;
+    margin: 0 0 1.5rem;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    margin-bottom: 1.1rem;
+  }
+  .form-group label {
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #a06060;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: .55rem .75rem;
+    border: 1px solid rgba(180,120,100,.3);
+    border-radius: 8px;
+    background: #fff;
+    color: #3d1a1a;
+    font-size: .9rem;
+    outline: none;
+    transition: border-color .15s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: #9b2b2b;
+  }
+  .btn-submit {
+    background: #9b2b2b;
+    color: #fff;
+    font-weight: 700;
+    font-size: .95rem;
+    padding: .6rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: .5rem;
+    transition: background .15s;
+    width: 100%;
+  }
+  .btn-submit:hover { background: #7a1f1f; }
+  .btn-back {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: .85rem;
+    color: #9b2b2b;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .btn-back:hover { text-decoration: underline; }
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const mapping = {{ CATEGORY_BY_ROLE|tojson }};
+  const roleSel = document.getElementById("role-select");
+  const catSel  = document.getElementById("category-select");
+
+  function rebuildCats(selectedValue) {
+    const role = roleSel.value;
+    const cats = mapping[role] || [];
+    catSel.innerHTML = "";
+    cats.forEach(([val, label]) => {
+      const opt = document.createElement("option");
+      opt.value = val;
+      opt.textContent = label;
+      if (selectedValue && selectedValue === val) opt.selected = true;
+      catSel.appendChild(opt);
+    });
+  }
+
+  const currentCat = "{{ form.category.data or '' }}";
+  rebuildCats(currentCat);
+  roleSel.addEventListener("change", () => rebuildCats());
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="admin-shell">
+  <div class="admin-card">
+    <h1>Edit Training Video</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+
+      <div class="form-group">
+        <label for="{{ form.title.id }}">Title</label>
+        {{ form.title(class="form-control") }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.description.id }}">Description</label>
+        {{ form.description(class="form-control", rows="3") }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.role.id }}">Role</label>
+        {{ form.role(class="form-select", id="role-select") }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.category.id }}">Subcategory</label>
+        {{ form.category(class="form-select", id="category-select") }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.video_file.id }}">Replace Video (optional)</label>
+        {{ form.video_file(class="form-control") }}
+      </div>
+
+      {{ form.submit(class="btn-submit") }}
+    </form>
+
+    <a href="{{ url_for('training.manage') }}" class="btn-back">← Back to Training</a>
+  </div>
+</div>
+{% endblock %}

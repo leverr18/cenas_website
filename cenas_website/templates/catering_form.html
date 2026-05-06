@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Catering — {{ location_label }} | Cenas Kitchen{% endblock %}
+
+{% block content %}
+<section class="ck-career-wrapper catering-bg">
+  <div class="ck-career-card">
+    <div class="career-info-box">
+      <h2>Let's Make Your Event Unforgettable</h2>
+      <p>From backyard gatherings to corporate luncheons, Cenas Kitchen brings the same bold Tex-Mex flavor you love — right to your event. Fill out the form and we'll be in touch within 2 business days.</p>
+
+      <div class="catering-steps-box">
+        <h3>How It Works</h3>
+
+        <div class="catering-step">
+          <h4>SUBMIT YOUR REQUEST</h4>
+          <p>Tell us about your event — date, location, guest count, and food preferences. The more detail the better.</p>
+        </div>
+
+        <div class="catering-step">
+          <h4>WE REACH OUT</h4>
+          <p>A member of our team will contact you to confirm availability and go over your menu options.</p>
+        </div>
+
+        <div class="catering-step">
+          <h4>CONFIRM THE DETAILS</h4>
+          <p>Once everything looks good, we lock in your date and take care of the rest.</p>
+        </div>
+
+        <div class="catering-step">
+          <h4>ENJOY YOUR EVENT</h4>
+          <p>Sit back and let us handle the food. Your guests get the full Cenas Kitchen experience without you lifting a finger.</p>
+        </div>
+      </div>
+
+      <hr style="border:0; border-top:1px solid rgba(206,182,140,.3); margin: 1.25rem 0;">
+    </div>
+
+    <div class="career-form-box">
+      {% if form_action %}
+      <form action="{{ form_action }}" method="POST" class="formspree-form">
+        <h2>Catering Request ({{ location_label }})</h2>
+
+        <!-- Formspree helpers -->
+        <input type="hidden" name="_subject" value="New Catering Request — {{ location_label }}">
+        <input type="hidden" name="location" value="{{ location_label }}">
+        <input type="hidden" name="_next"
+               value="{{ url_for('catering.catering_form', slug=location_slug, _external=True) }}?ok=1">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+
+        <input type="text" name="event_address" placeholder="Event Address" required>
+        <input type="date" name="event_date" required>
+        <input type="time" name="start_time" required>
+        <input type="time" name="end_time" required>
+        <input type="number" name="guests" placeholder="Number of Guests" min="1" required>
+
+        <h3>Food Preferences</h3>
+        <input type="text" name="meat" placeholder="Preferred Meat (Chicken, Beef, Pork)" required>
+        <input type="text" name="beans" placeholder="Preferred Beans (Refried, Black, None)" required>
+        <input type="text" name="tortilla" placeholder="Preferred Tortilla (Flour, Corn)" required>
+
+        <label style="display:block; margin-top:12px;">
+          Best way to contact you
+          <select name="contact_preference" required>
+            <option value="" disabled selected>Select</option>
+            <option>Email</option>
+            <option>Phone Call</option>
+            <option>Text</option>
+          </select>
+        </label>
+
+        <textarea name="additional_info" placeholder="Additional info or special requests"></textarea>
+
+        <button type="submit">Submit Request</button>
+      </form>
+
+      {% if request.args.get('ok') %}
+        <p class="flash-success" style="margin-top:1rem;">Thanks! Your request was sent.</p>
+      {% endif %}
+
+      {% else %}
+      <h2>Catering Request ({{ location_label }})</h2>
+      <p>Online catering requests for this location are temporarily unavailable.</p>
+      <p>Please reach out to us directly:</p>
+      <p><strong>Email:</strong> <a href="mailto:info@cenaskitchen.com">info@cenaskitchen.com</a></p>
+      <p><strong>Phone:</strong> <a href="tel:+12812511515">(281) 251-1515</a></p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

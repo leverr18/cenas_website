@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block title %}Donations - Cenas Kitchen{% endblock %}
+
+{% block content %}
+  <section class="ck-career-wrapper donation-bg">
+    <div class="career-card">
+    <div class="donation-wrapper">
+      <div class="donation-info-box">
+        <h2>Donation Request Guidelines</h2>
+        <p>Thank you for considering us as a potential contributor to your organization. We are proud to support initiatives that uplift our community through education, charity, and local events. In order to fairly evaluate requests, we kindly ask that you complete the donation request form below. Please note the following guidelines:</p>
+      
+        <div class="catering-steps-box">
+          <h3>Donation Requests</h3>
+          <div class="catering-step">
+            <h4>ELIGIBILITY</h4>
+            <p>We prioritize donations to registered non-profit organizations, schools, and charitable events. Proof of your organization's non-profit status may be required.</p>
+          </div>
+          <div class="catering-step">
+            <h4>SUBMISSION</h4>
+            <p>All requests must be submitted at least 30 days prior to the date of the event. We are unable to accommodate last-minute requests.</p>
+          </div>
+          <div class="catering-step">
+            <h4>SCOPE</h4>
+            <p>While we wish we could support every request, donations will be granted based on the alignment of your cause with our mission and the availability of resources.</p>
+          </div>
+          <div class="catering-step">
+            <h4>RESPONSE TIME</h4>
+            <p>Due to the volume of requests, please allow up to two weeks for a response. Submission of a request does not guarantee approval.</p>
+          </div>
+          <p>We greatly appreciate the work you do for our community, and we look forward to reviewing your application. If you have any questions, feel free to contact us.</p>
+        </div>
+      </div>
+
+<div class="community-form-box">
+      <form action="https://formspree.io/f/xovnbwab" method="POST" class="formspree-form" enctype="multipart/form-data">
+        <h2>Donation Request Form</h2>
+
+        <!-- Formspree helpers -->
+        <input type="hidden" name="_subject" value="New Donation/Fundraiser Request - Cenas Kitchen">
+        <!-- <input type="hidden" name="_next" value="https://cenaskitchen.com/thanks"> -->
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+        <!-- ================= HOW CAN WE HELP ================= -->
+        <fieldset>
+          <legend>How Can We Help</legend>
+
+          <label>What type of support are you requesting?*
+            <select name="support_type" required>
+              <option value="" disabled selected>Select one</option>
+              <option>Gift Card</option>
+              <option>Spirit Night Fundraiser</option>
+              <option>Food</option>
+            </select>
+          </label>
+
+          <label>Name of Event or Program* 
+            <input type="text" name="event_name" required>
+          </label>
+
+          <div class="grid-2">
+            <label>Event Date(s) and Location* 
+              <input type="text" name="event_dates_location" placeholder="Ex: Oct 14 at Main Gym, 1234 Elm St" required>
+            </label>
+            <label>Expected Number of Attendees/Participants* 
+              <input type="number" name="expected_attendees" min="1" required>
+            </label>
+          </div>
+
+          <label>How will the donation be used?* 
+            <textarea name="donation_use" rows="3" required></textarea>
+          </label>
+
+          <label>What impact will this event or program have in the community?* 
+            <textarea name="community_impact" rows="3" required></textarea>
+          </label>
+        </fieldset>
+
+        <!-- ================= ORGANIZATION DETAILS ================= -->
+        <fieldset>
+          <legend>Organization Details</legend>
+
+          <label>Is your organization a 501(c)(3) nonprofit?*
+            <div class="radio-group">
+              <label><input type="radio" name="is_501c3" value="Yes" required> Yes</label>
+              <label><input type="radio" name="is_501c3" value="No"> No</label>
+            </div>
+          </label>
+
+          <div id="tax-proof-wrap" class="hidden">
+            <label>Upload tax exemption certificate (PDF/DOC)
+              <input type="file" name="tax_exemption_certificate" accept=".pdf,.doc,.docx">
+            </label>
+          </div>
+
+          <label>Briefly describe your organization and its mission.* 
+            <textarea name="org_mission" rows="3" required></textarea>
+          </label>
+
+          <label>How long has your organization been operating?* 
+            <input type="text" name="org_years_operating" placeholder="e.g., 5 years" required>
+          </label>
+        </fieldset>
+
+        <!-- ================= CONTACT INFORMATION ================= -->
+        <fieldset>
+          <legend>Contact Information</legend>
+
+          <div class="grid-2">
+            <label>Organization Name* <input type="text" name="organization" required></label>
+            <label>Contact Person (First &amp; Last Name)* <input type="text" name="contact_name" required></label>
+          </div>
+
+          <div class="grid-3">
+            <label>Your role in the organization* <input type="text" name="contact_role" required></label>
+            <label>Email Address* <input type="email" name="email" required></label>
+            <label>Phone Number* <input type="tel" name="phone" required></label>
+          </div>
+
+          <label>Organization Website or Social Media Link (optional)
+            <input type="url" name="org_website" placeholder="https://example.org or @handle">
+          </label>
+        </fieldset>
+
+        <!-- ================= RECOGNITION / PARTNERSHIP ================= -->
+        <fieldset>
+          <legend>Recognition / Partnership</legend>
+
+          <label>How will our restaurant be recognized for this donation?* 
+            <textarea name="recognition_plan" rows="3" placeholder="e.g., logo placement, social media mention, event signage" required></textarea>
+          </label>
+
+          <label>Have we partnered with your organization before?*
+            <div class="radio-group">
+              <label><input type="radio" name="partnered_before" value="Yes" required> Yes</label>
+              <label><input type="radio" name="partnered_before" value="No"> No</label>
+            </div>
+          </label>
+
+          <div id="partner-when-wrap" class="hidden">
+            <label>If yes, when?
+              <input type="text" name="partnered_when" placeholder="e.g., Spring 2023">
+            </label>
+          </div>
+
+          <label>Which Cenas location are you requesting from?*
+            <select name="requested_location" required>
+              <option value="" disabled selected>Select Location</option>
+              <option>Houston</option>
+              <option>Tomball</option>
+            </select>
+          </label>
+        </fieldset>
+
+        <!-- ================= FINAL DETAILS ================= -->
+        <fieldset>
+          <legend>Final Details</legend>
+
+          <div class="grid-2">
+            <label>Deadline for donation decision* 
+              <input type="date" name="decision_deadline" required>
+            </label>
+
+            <label>Attachments (optional)
+              <input type="file" name="attachments" multiple>
+            </label>
+          </div>
+
+          <label>Additional comments (optional)
+            <textarea name="additional_comments" rows="3" placeholder="Links, notes, or special instructions"></textarea>
+          </label>
+        </fieldset>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+    </div>
+  </section>
+
+<script>
+  (function(){
+    // Toggle tax certificate upload when 501(c)(3) = Yes
+    const taxWrap = document.getElementById('tax-proof-wrap');
+    const taxInput = taxWrap ? taxWrap.querySelector('input[type="file"]') : null;
+    function toggleTaxProof(){
+      const val = (document.querySelector('input[name="is_501c3"]:checked') || {}).value;
+      const show = val === 'Yes';
+      if (taxWrap) taxWrap.classList.toggle('hidden', !show);
+      if (taxInput) taxInput.required = false; // keep optional for Formspree simplicity
+    }
+    document.querySelectorAll('input[name="is_501c3"]').forEach(r => r.addEventListener('change', toggleTaxProof));
+    toggleTaxProof();
+
+    // Toggle "When?" field when partnered_before = Yes
+    const whenWrap = document.getElementById('partner-when-wrap');
+    const whenInput = whenWrap ? whenWrap.querySelector('input') : null;
+    function togglePartnerWhen(){
+      const val = (document.querySelector('input[name="partnered_before"]:checked') || {}).value;
+      const show = val === 'Yes';
+      if (whenWrap) whenWrap.classList.toggle('hidden', !show);
+      if (whenInput) whenInput.required = show;
+    }
+    document.querySelectorAll('input[name="partnered_before"]').forEach(r => r.addEventListener('change', togglePartnerWhen));
+    togglePartnerWhen();
+  })();
+</script>
+
+<style>
+  /* Light structural styles; safe alongside your site CSS */
+  .grid-2 { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+  .grid-3 { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+  fieldset { border:1px solid #ddd; padding:16px; margin:16px 0; border-radius:8px; }
+  legend { font-weight:600; padding:0 8px; }
+  label { display:block; font-size:.95rem; margin:8px 0; }
+  input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="date"], input[type="number"], select, textarea {
+    width:100%; padding:10px; border:1px solid #ccc; border-radius:8px;
+  }
+
+  /* Aligned Yes/No radios */
+  .radio-group {
+    display:flex; gap:1.25rem; align-items:center; flex-wrap:wrap;
+  }
+  .radio-group > label {
+    display:inline-flex; align-items:center; gap:6px; cursor:pointer; user-select:none;
+  }
+
+  .hidden { display:none; }
+</style>
+{% endblock %}
